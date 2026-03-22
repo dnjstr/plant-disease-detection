@@ -2,7 +2,6 @@ import argparse
 import os
 import json
 import numpy as np
-
 import tensorflow as tf
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
