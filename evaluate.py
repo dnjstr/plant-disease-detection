@@ -1,13 +1,3 @@
-"""
-Plant Disease Detection - Evaluate on Test Set
-Compatible with: TensorFlow 2.20.0, Python 3.11 / 3.12
-
-Outputs:
-  - Test accuracy & loss
-  - Full classification report
-  - Confusion matrix saved as confusion_matrix.png
-"""
-
 import os
 import json
 import numpy as np
@@ -30,16 +20,16 @@ if os.path.exists(CLASS_NAMES_PATH):
     with open(CLASS_NAMES_PATH) as f:
         class_names = json.load(f)
 else:
-    class_names = None   # will be read from dataset
+    class_names = None
 
 # ── Load model ──
 if not os.path.exists(MODEL_PATH):
-    print(f"❌ Model not found at '{MODEL_PATH}'. Run train.py first.")
+    print(f" Model not found at '{MODEL_PATH}'. Run train.py first.")
     exit()
 
-print(f"🔄 Loading model from {MODEL_PATH}...")
+print(f"Loading model from {MODEL_PATH}...")
 model = load_model(MODEL_PATH)
-print("✅ Model loaded!\n")
+print("Model loaded!\n")
 
 # ── Test dataset (no augmentation, no shuffle) ──
 test_ds = image_dataset_from_directory(
@@ -53,7 +43,7 @@ test_ds = image_dataset_from_directory(
 if class_names is None:
     class_names = test_ds.class_names
 
-print(f"✅ Classes: {class_names}\n")
+print(f"Classes: {class_names}\n")
 
 # Rescale (must match training)
 rescale = tf.keras.layers.Rescaling(1.0 / 255)
@@ -62,7 +52,7 @@ test_ds = test_ds.map(lambda x, y: (rescale(x), y),
 test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
 
 # ── Predict ──
-print("🔍 Running predictions on test set...")
+print("Running predictions on test set...")
 y_true_batches = []
 y_pred_batches = []
 
@@ -76,7 +66,7 @@ y_true = np.concatenate(y_true_batches)
 
 # ── Metrics ──
 loss, acc = model.evaluate(test_ds, verbose=0)
-print(f"\n📊 Test Accuracy : {acc * 100:.2f}%")
+print(f"\nTest Accuracy : {acc * 100:.2f}%")
 print(f"   Test Loss     : {loss:.4f}\n")
 
 print("Classification Report:")
@@ -95,4 +85,4 @@ plt.ylabel("True Label")
 plt.tight_layout()
 plt.savefig("confusion_matrix.png", dpi=150)
 plt.show()
-print("\n📊 Confusion matrix saved as confusion_matrix.png")
+print("\nConfusion matrix saved as confusion_matrix.png")
