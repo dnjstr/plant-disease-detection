@@ -27,7 +27,7 @@ import random
 from pathlib import Path
 
 # ─── CONFIG ───────────────────────────────────────────────
-RAW_DIR     = "raw_dataset"   # folder where you extracted the Kaggle zip
+RAW_DIR     = "raw_dataset"
 OUTPUT_DIR  = "dataset"
 TRAIN_RATIO = 0.70
 VAL_RATIO   = 0.15
@@ -41,7 +41,7 @@ IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 def prepare_dataset():
     raw_path = Path(RAW_DIR)
     if not raw_path.exists():
-        print(f"❌ '{RAW_DIR}' folder not found.")
+        print(f"'{RAW_DIR}' folder not found.")
         print("   Steps to fix:")
         print("   1. Download from: https://www.kaggle.com/datasets/tejasbargujechef/onion-diseases")
         print("   2. Extract the ZIP into a folder named 'raw_dataset' in this directory.")
@@ -49,10 +49,10 @@ def prepare_dataset():
 
     class_dirs = [d for d in raw_path.iterdir() if d.is_dir()]
     if not class_dirs:
-        print(f"❌ No class subfolders found inside '{RAW_DIR}'.")
+        print(f"No class subfolders found inside '{RAW_DIR}'.")
         return
 
-    print(f"📂 Found {len(class_dirs)} class(es): {[d.name for d in class_dirs]}\n")
+    print(f"Found {len(class_dirs)} class(es): {[d.name for d in class_dirs]}\n")
 
     # Create output folders
     for split in ["train", "val", "test"]:
@@ -87,7 +87,7 @@ def prepare_dataset():
                 shutil.copy2(f, dest / f.name)
                 total_moved += 1
 
-    print(f"\n✅ Done! {total_moved} images organised into '{OUTPUT_DIR}/'")
+    print(f"\nDone! {total_moved} images organised into '{OUTPUT_DIR}/'")
     print("   Next step → run:  python train.py")
 
 if __name__ == "__main__":
