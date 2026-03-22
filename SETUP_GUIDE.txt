@@ -6,7 +6,7 @@
 # ── PREREQUISITES ──────────────────────────────────────────
 # Python 3.11 or 3.12  ← both fully supported now!
 # Download: https://www.python.org/downloads/
-# ✅ During install, CHECK "Add Python to PATH"
+# During install, CHECK "Add Python to PATH"
 
 # ── STEP 1: Create a virtual environment ───────────────────
 # Open Command Prompt (cmd) in your project folder:
@@ -60,14 +60,14 @@ python evaluate.py                  # accuracy + confusion_matrix.png
 python predict.py --image leaf.jpg  # predict one photo
 
 # ── WHAT CHANGED FROM OLD VERSION ──────────────────────────
-# ✅ tensorflow==2.20.0  (was 2.13.0)
-# ✅ Python 3.11 / 3.12 fully supported
-# ✅ Imports now use `from keras` directly (Keras 3 style)
-# ✅ ImageDataGenerator replaced with image_dataset_from_directory
-# ✅ Model saved as .keras format (replaces .h5)
-# ✅ class_names.json auto-saved by train.py, used by predict/evaluate
-# ✅ Better augmentation layers (RandomContrast, RandomTranslation added)
-# ✅ BatchNormalization added to model head
+# tensorflow==2.20.0  (was 2.13.0)
+# Python 3.11 / 3.12 fully supported
+# Imports now use `from keras` directly (Keras 3 style)
+# ImageDataGenerator replaced with image_dataset_from_directory
+# Model saved as .keras format (replaces .h5)
+# class_names.json auto-saved by train.py, used by predict/evaluate
+# Better augmentation layers (RandomContrast, RandomTranslation added)
+# BatchNormalization added to model head
 
 # ── COMMON ERRORS & FIXES ──────────────────────────────────
 # "No module named tensorflow"
