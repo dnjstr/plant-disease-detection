@@ -1,0 +1,89 @@
+# ============================================================
+#  PLANT DISEASE DETECTION — WINDOWS SETUP GUIDE
+#  TensorFlow 2.20.0  |  Python 3.11 / 3.12
+# ============================================================
+
+# ── PREREQUISITES ──────────────────────────────────────────
+# Python 3.11 or 3.12  ← both fully supported now!
+# Download: https://www.python.org/downloads/
+# ✅ During install, CHECK "Add Python to PATH"
+
+# ── STEP 1: Create a virtual environment ───────────────────
+# Open Command Prompt (cmd) in your project folder:
+
+python -m venv venv
+venv\Scripts\activate        # you'll see (venv) in the prompt
+
+# ── STEP 2: Upgrade pip ────────────────────────────────────
+python -m pip install --upgrade pip
+
+# ── STEP 3: Install all packages ───────────────────────────
+pip install -r requirements.txt
+
+# If you get a "could not resolve host" network error, run:
+pip install tensorflow==2.20.0 --trusted-host pypi.org --trusted-host files.pythonhosted.org
+
+# ── STEP 4: Verify TensorFlow ──────────────────────────────
+python -c "import tensorflow as tf; print(tf.__version__)"
+# Should print: 2.20.0
+
+# ── STEP 5: Download the Kaggle Dataset ────────────────────
+# Option A — Browser (easiest):
+#   1. Go to: https://www.kaggle.com/datasets/tejasbargujechef/onion-diseases
+#   2. Click Download (free Kaggle account required)
+#   3. Extract the ZIP → rename the extracted folder to: raw_dataset
+#   4. Place raw_dataset/ next to all the .py files
+
+# Option B — Kaggle CLI:
+#   pip install kaggle
+#   Place kaggle.json in: C:\Users\YourName\.kaggle\kaggle.json
+#   kaggle datasets download -d tejasbargujechef/onion-diseases
+#   Expand-Archive onion-diseases.zip -DestinationPath raw_dataset
+
+# ── STEP 6: Project folder structure ───────────────────────
+#  plant_disease_detection/
+#  ├── raw_dataset/              ← extracted Kaggle data
+#  │   ├── Downy Mildew/
+#  │   ├── Healthy/
+#  │   ├── Iris Yellow Spot/
+#  │   └── Purple Blotch/
+#  ├── prepare_dataset.py
+#  ├── train.py
+#  ├── evaluate.py
+#  ├── predict.py
+#  └── requirements.txt
+
+# ── STEP 7: Run the full pipeline ──────────────────────────
+python prepare_dataset.py           # splits images → dataset/train|val|test
+python train.py                     # trains model → plant_disease_model.keras
+python evaluate.py                  # accuracy + confusion_matrix.png
+python predict.py --image leaf.jpg  # predict one photo
+
+# ── WHAT CHANGED FROM OLD VERSION ──────────────────────────
+# ✅ tensorflow==2.20.0  (was 2.13.0)
+# ✅ Python 3.11 / 3.12 fully supported
+# ✅ Imports now use `from keras` directly (Keras 3 style)
+# ✅ ImageDataGenerator replaced with image_dataset_from_directory
+# ✅ Model saved as .keras format (replaces .h5)
+# ✅ class_names.json auto-saved by train.py, used by predict/evaluate
+# ✅ Better augmentation layers (RandomContrast, RandomTranslation added)
+# ✅ BatchNormalization added to model head
+
+# ── COMMON ERRORS & FIXES ──────────────────────────────────
+# "No module named tensorflow"
+#   → Activate venv first:  venv\Scripts\activate
+#
+# "Could not resolve host" during pip install
+#   → pip install tensorflow==2.20.0 --trusted-host pypi.org --trusted-host files.pythonhosted.org
+#   → Or switch to mobile hotspot temporarily
+#
+# OOM / out of memory during training
+#   → In train.py, change BATCH_SIZE = 32  to  BATCH_SIZE = 16
+#
+# Slow training (CPU only)?
+#   → Normal. Set EPOCHS = 5 for a quick test first.
+#   → CPU training: ~30–60 min | GPU: ~5 min
+#
+# GPU support (NVIDIA only):
+#   → TF 2.20 auto-detects CUDA. Install CUDA 12.x + cuDNN 9.x from NVIDIA.
+#   → No separate tensorflow-gpu package needed anymore!
