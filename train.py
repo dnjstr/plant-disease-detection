@@ -1,8 +1,6 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-
-# TF 2.20+ uses keras 3 — import from keras directly
 import tensorflow as tf
 from tensorflow import keras
 from keras.applications import MobileNetV2
