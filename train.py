@@ -1,8 +1,6 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-
-# TF 2.20+ uses keras 3 — import from keras directly
 import tensorflow as tf
 from tensorflow import keras
 from keras.applications import MobileNetV2
@@ -80,7 +78,7 @@ base_model = MobileNetV2(
     include_top=False,
     input_shape=(224, 224, 3),
 )
-base_model.trainable = False   # freeze pre-trained layers first
+base_model.trainable = False
 
 inputs      = keras.Input(shape=(224, 224, 3))
 x           = base_model(inputs, training=False)

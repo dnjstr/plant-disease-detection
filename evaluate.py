@@ -3,7 +3,6 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 import tensorflow as tf
 from keras.models import load_model
 from keras.utils import image_dataset_from_directory
