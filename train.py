@@ -78,7 +78,7 @@ base_model = MobileNetV2(
     include_top=False,
     input_shape=(224, 224, 3),
 )
-base_model.trainable = False   # freeze pre-trained layers first
+base_model.trainable = False
 
 inputs      = keras.Input(shape=(224, 224, 3))
 x           = base_model(inputs, training=False)
