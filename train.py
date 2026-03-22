@@ -1,10 +1,3 @@
-"""
-Plant Disease Detection - Training Script
-Compatible with: TensorFlow 2.20.0, Python 3.11 / 3.12
-Uses MobileNetV2 (pre-trained on ImageNet) with transfer learning
-Dataset: Onion Diseases (Kaggle - Tejas Barguje Patil)
-"""
-
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,8 +12,8 @@ from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from keras.utils import image_dataset_from_directory
 
-print(f"✅ TensorFlow version : {tf.__version__}")
-print(f"✅ Keras version      : {keras.__version__}\n")
+print(f"TensorFlow version : {tf.__version__}")
+print(f"Keras version      : {keras.__version__}\n")
 
 # ─────────────────────────────────────────────
 # CONFIGURATION
@@ -29,8 +22,8 @@ IMG_SIZE      = (224, 224)
 BATCH_SIZE    = 32
 EPOCHS        = 20
 LEARNING_RATE = 0.0001
-DATA_DIR      = "dataset"           # folder with train/ val/ test/ subfolders
-MODEL_SAVE    = "plant_disease_model.keras"   # .keras format (recommended in TF 2.20+)
+DATA_DIR      = "dataset"
+MODEL_SAVE    = "plant_disease_model.keras" 
 
 # ─────────────────────────────────────────────
 # DATA LOADING  (using modern image_dataset_from_directory)
@@ -54,7 +47,7 @@ val_ds = image_dataset_from_directory(
 
 class_names = train_ds.class_names
 num_classes = len(class_names)
-print(f"\n✅ Classes found ({num_classes}): {class_names}\n")
+print(f"\nClasses found ({num_classes}): {class_names}\n")
 
 # ─────────────────────────────────────────────
 # PREPROCESSING + AUGMENTATION  (as Keras layers)
@@ -124,7 +117,7 @@ callbacks = [
 # ─────────────────────────────────────────────
 # PHASE 1 — Train only the custom head (base frozen)
 # ─────────────────────────────────────────────
-print("\n📌 Phase 1: Training custom head (base frozen)...\n")
+print("\nPhase 1: Training custom head (base frozen)...\n")
 history1 = model.fit(
     train_ds,
     epochs=10,
@@ -135,7 +128,7 @@ history1 = model.fit(
 # ─────────────────────────────────────────────
 # PHASE 2 — Fine-tune last 30 layers of base
 # ─────────────────────────────────────────────
-print("\n📌 Phase 2: Fine-tuning last 30 layers...\n")
+print("\nPhase 2: Fine-tuning last 30 layers...\n")
 base_model.trainable = True
 for layer in base_model.layers[:-30]:
     layer.trainable = False
@@ -185,7 +178,7 @@ def plot_history(h1, h2):
     plt.tight_layout()
     plt.savefig("training_history.png", dpi=150)
     plt.show()
-    print("📊 Training plot saved as training_history.png")
+    print("Training plot saved as training_history.png")
 
 plot_history(history1, history2)
 
@@ -194,5 +187,5 @@ import json
 with open("class_names.json", "w") as f:
     json.dump(class_names, f)
 
-print(f"\n✅ Model saved to  : {MODEL_SAVE}")
-print(f"✅ Class names saved: class_names.json")
+print(f"\nModel saved to  : {MODEL_SAVE}")
+print(f"Class names saved: class_names.json")
