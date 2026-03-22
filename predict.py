@@ -1,12 +1,3 @@
-"""
-Plant Disease Detection - Predict on a single image or folder
-Compatible with: TensorFlow 2.20.0, Python 3.11 / 3.12
-
-Usage:
-    python predict.py --image path/to/leaf.jpg
-    python predict.py --folder path/to/images/
-"""
-
 import argparse
 import os
 import json
@@ -27,7 +18,7 @@ if os.path.exists(CLASS_NAMES_PATH):
 else:
     # Fallback — update these if your dataset differs
     CLASS_NAMES = ["Downy Mildew", "Healthy", "Iris Yellow Spot", "Purple Blotch"]
-    print(f"⚠️  '{CLASS_NAMES_PATH}' not found, using default class names.\n")
+    print(f"'{CLASS_NAMES_PATH}' not found, using default class names.\n")
 
 def preprocess_image(img_path):
     img = load_img(img_path, target_size=IMG_SIZE)
@@ -41,7 +32,7 @@ def predict_image(model, img_path):
     label = CLASS_NAMES[idx] if idx < len(CLASS_NAMES) else f"Class_{idx}"
     conf  = float(preds[idx]) * 100
 
-    print(f"\n🌿 Image      : {os.path.basename(img_path)}")
+    print(f"\nImage      : {os.path.basename(img_path)}")
     print(f"   Result     : {label}")
     print(f"   Confidence : {conf:.1f}%")
     print("   All scores :")
@@ -57,19 +48,19 @@ def main():
     args = parser.parse_args()
 
     if not os.path.exists(MODEL_PATH):
-        print(f"❌ Model not found at '{MODEL_PATH}'.")
+        print(f"Model not found at '{MODEL_PATH}'.")
         print("   Run train.py first to create the model.")
         return
 
-    print(f"🔄 Loading model from {MODEL_PATH}...")
+    print(f"Loading model from {MODEL_PATH}...")
     model = load_model(MODEL_PATH)
-    print("✅ Model loaded!\n")
+    print("Model loaded!\n")
 
     IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
     if args.image:
         if not os.path.exists(args.image):
-            print(f"❌ Image not found: {args.image}")
+            print(f"Image not found: {args.image}")
             return
         predict_image(model, args.image)
 
@@ -77,14 +68,14 @@ def main():
         files = [f for f in os.listdir(args.folder)
                  if os.path.splitext(f)[1].lower() in IMG_EXTS]
         if not files:
-            print(f"❌ No image files found in '{args.folder}'")
+            print(f"No image files found in '{args.folder}'")
             return
-        print(f"📂 Found {len(files)} image(s) in '{args.folder}'\n")
+        print(f"Found {len(files)} image(s) in '{args.folder}'\n")
         for fname in sorted(files):
             predict_image(model, os.path.join(args.folder, fname))
 
     else:
-        print("⚠️  Provide --image or --folder.")
+        print("Provide --image or --folder.")
         print("   Example: python predict.py --image leaf.jpg")
 
 if __name__ == "__main__":
