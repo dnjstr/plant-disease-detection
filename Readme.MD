@@ -3,7 +3,7 @@
 A machine learning project that detects onion plant diseases from leaf photos using **MobileNetV2** transfer learning.
 
 > **Course Project** — Machine Learning  
-> **Dataset:** [Onion Diseases – Kaggle (Tejas Barguje Patil)](https://www.kaggle.com/datasets/tejasbargujechef/onion-diseases)
+> **Dataset:** [Onion Diseases – Kaggle (Tejas Barguje Patil)](https://www.kaggle.com/datasets/tejasbargujepatil/onion-diseases/data)
 
 ---
 
@@ -95,7 +95,7 @@ pip install -r requirements.txt
 ```
 
 **Step 4 — Download the dataset**
-1. Go to: https://www.kaggle.com/datasets/tejasbargujechef/onion-diseases
+1. Go to: https://www.kaggle.com/datasets/tejasbargujepatil/onion-diseases/data
 2. Click **Download** (free Kaggle account required)
 3. Extract the ZIP and rename the folder to `raw_dataset`
 4. Place `raw_dataset/` inside the project folder
