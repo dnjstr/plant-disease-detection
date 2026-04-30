@@ -44,10 +44,7 @@ if class_names is None:
 
 print(f"Classes: {class_names}\n")
 
-# Rescale (must match training)
-rescale = tf.keras.layers.Rescaling(1.0 / 255)
-test_ds = test_ds.map(lambda x, y: (rescale(x), y),
-                      num_parallel_calls=tf.data.AUTOTUNE)
+# Prefetch (Rescaling moved to model)
 test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
 
 # ── Predict ──

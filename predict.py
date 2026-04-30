@@ -15,14 +15,19 @@ if os.path.exists(CLASS_NAMES_PATH):
     with open(CLASS_NAMES_PATH) as f:
         CLASS_NAMES = json.load(f)
 else:
-    # Fallback — update these if your dataset differs
-    CLASS_NAMES = ["Downy Mildew", "Healthy", "Iris Yellow Spot", "Purple Blotch"]
+    # Fallback — Full list of classes from the Onion Diseases dataset
+    CLASS_NAMES = [
+        "Alternaria_D", "Botrytis Leaf Blight", "Bulb Rot", "Bulb_blight-D",
+        "Caterpillar-P", "Downy mildew", "Fusarium-D", "Healthy leaves",
+        "Iris yellow virus_augment", "Purple blotch", "Rust", "Virosis-D",
+        "Xanthomonas Leaf Blight", "onion1", "stemphylium Leaf Blight"
+    ]
     print(f"'{CLASS_NAMES_PATH}' not found, using default class names.\n")
 
 def preprocess_image(img_path):
     img = load_img(img_path, target_size=IMG_SIZE)
-    arr = img_to_array(img) / 255.0
-    return np.expand_dims(arr, axis=0)
+    arr = img_to_array(img)
+    return np.expand_dims(arr, axis=0) # Rescaling is now inside the model
 
 def predict_image(model, img_path):
     arr   = preprocess_image(img_path)
