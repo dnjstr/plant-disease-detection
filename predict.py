@@ -6,7 +6,7 @@ import tensorflow as tf
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
 
-MODEL_PATH      = "plant_disease_model.keras"
+MODEL_PATH      = "cv_models/model_fold_1.keras"
 CLASS_NAMES_PATH = "class_names.json"
 IMG_SIZE        = (224, 224)
 
@@ -51,10 +51,13 @@ def main():
     parser.add_argument("--folder", type=str, help="Path to a folder of images")
     args = parser.parse_args()
 
+    # Check for the model
     if not os.path.exists(MODEL_PATH):
-        print(f"Model not found at '{MODEL_PATH}'.")
-        print("   Run train.py first to create the model.")
-        return
+        if os.path.exists("plant_disease_model.keras"):
+            MODEL_PATH = "plant_disease_model.keras"
+        else:
+            print(f"Model not found. Please run 'train_cv.py' first.")
+            return
 
     print(f"Loading model from {MODEL_PATH}...")
     model = load_model(MODEL_PATH)
