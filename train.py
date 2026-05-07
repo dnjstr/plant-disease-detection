@@ -61,14 +61,34 @@ augment = keras.Sequential([
 ], name="augmentation")
 
 # Apply to datasets
-train_ds = train_ds.map(lambda x, y: (augment(rescale(x), training=True), y),
+train_ds = train_ds.map(lambda x, y: (augment(x, training=True), y),
                         num_parallel_calls=tf.data.AUTOTUNE)
-val_ds   = val_ds.map(lambda x, y: (rescale(x), y),
-                      num_parallel_calls=tf.data.AUTOTUNE)
+val_ds   = val_ds.prefetch(tf.data.AUTOTUNE) # Rescaling moved to model
 
 # Cache + prefetch for speed
 train_ds = train_ds.cache().prefetch(tf.data.AUTOTUNE)
 val_ds   = val_ds.cache().prefetch(tf.data.AUTOTUNE)
+
+# Calculate Class Weights to handle imbalance
+print("Calculating class weights...")
+class_indices = np.arange(num_classes)
+# Count files in each class directory to get frequencies
+y_train = []
+for i, name in enumerate(class_names):
+    count = len(os.listdir(os.path.join(DATA_DIR, "train", name)))
+    y_train.extend([i] * count)
+
+from sklearn.utils import class_weight
+weights = class_weight.compute_class_weight(
+    class_weight="balanced",
+    classes=class_indices,
+    y=y_train
+)
+class_weights = dict(zip(class_indices, weights))
+
+print("Class weights:")
+for i, name in enumerate(class_names):
+    print(f"  {name:<25}: {class_weights[i]:.4f}")
 
 # ─────────────────────────────────────────────
 # BUILD MODEL  (MobileNetV2 + custom head)
@@ -81,7 +101,8 @@ base_model = MobileNetV2(
 base_model.trainable = False
 
 inputs      = keras.Input(shape=(224, 224, 3))
-x           = base_model(inputs, training=False)
+x           = keras.layers.Rescaling(1.0 / 255)(inputs)  # Rescaling inside model
+x           = base_model(x, training=False)
 x           = GlobalAveragePooling2D()(x)
 x           = BatchNormalization()(x)
 x           = Dense(256, activation="relu")(x)
@@ -121,6 +142,7 @@ history1 = model.fit(
     epochs=10,
     validation_data=val_ds,
     callbacks=callbacks,
+    class_weight=class_weights,
 )
 
 # ─────────────────────────────────────────────
@@ -142,6 +164,7 @@ history2 = model.fit(
     epochs=EPOCHS,
     validation_data=val_ds,
     callbacks=callbacks,
+    class_weight=class_weights,
 )
 
 # ─────────────────────────────────────────────

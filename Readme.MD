@@ -1,7 +1,7 @@
 #  Plant Disease Detection from Leaf Images
 
 A machine learning project that detects onion plant diseases from leaf photos using **MobileNetV2** transfer learning.
-
+ 
 > **Course Project** — Machine Learning  
 > **Dataset:** [Onion Diseases – Kaggle (Tejas Barguje Patil)](https://www.kaggle.com/datasets/tejasbargujepatil/onion-diseases/data)
 
