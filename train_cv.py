@@ -21,6 +21,7 @@ LEARNING_RATE = 0.0001
 RAW_DIR       = "raw_dataset"
 MODEL_DIR     = "cv_models"
 NUM_FOLDS     = 5
+SELECTED_MODEL = "mobilenet" # Options: "mobilenet", "resnet", "densenet"
 
 os.makedirs(MODEL_DIR, exist_ok=True)
 
@@ -149,7 +150,7 @@ if __name__ == "__main__":
         train_ds = create_dataset(X_resampled, y_resampled, augment=True)
         val_ds = create_dataset(X_val_fold, y_val_fold, shuffle=False)
         
-        model = build_model(model_type="mobilenet")
+        model = build_model(model_type=SELECTED_MODEL)
         checkpoint_path = os.path.join(MODEL_DIR, f"model_fold_{fold+1}.keras")
         
         callbacks = [
