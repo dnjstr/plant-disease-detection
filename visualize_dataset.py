@@ -42,14 +42,14 @@ def create_visualization():
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 12))
 
     # Before Plot
-    sns.barplot(x=counts_before, y=classes, ax=ax1, palette="viridis")
+    sns.barplot(x=counts_before, y=classes, ax=ax1, hue=classes, palette="viridis", legend=False)
     ax1.set_title("Before: Raw Dataset Distribution (Heavily Imbalanced)", fontsize=16, fontweight='bold')
     ax1.set_xlabel("Number of Images")
     for i, v in enumerate(counts_before):
         ax1.text(v + 10, i, str(v), color='black', va='center')
 
     # After Plot
-    sns.barplot(x=counts_after, y=classes, ax=ax2, palette="magma")
+    sns.barplot(x=counts_after, y=classes, ax=ax2, hue=classes, palette="magma", legend=False)
     ax2.set_title("After: Balanced Distribution (Using Oversampling)", fontsize=16, fontweight='bold')
     ax2.set_xlabel("Number of Images (Augmented/Duplicated)")
     for i, v in enumerate(counts_after):

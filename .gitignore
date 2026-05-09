@@ -12,12 +12,12 @@ __pycache__/
 *$py.class
 
 # Models
-# *.keras
-# *.h5
-# cv_models/
+*.keras
+*.h5
+cv_models/
 
 # Visualization & Results
-*.png
+# *.png
 dataset_stats.json
 cv_results.json
 
