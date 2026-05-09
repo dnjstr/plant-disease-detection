@@ -8,7 +8,7 @@ from keras.models import load_model
 from keras.utils import image_dataset_from_directory
 from sklearn.metrics import classification_report, confusion_matrix
 
-MODEL_PATH      = "cv_models/model_fold_1.keras" # Default to Fold 1
+MODEL_PATH      = "cv_models/model_fold_2.keras"
 CLASS_NAMES_PATH = "class_names.json"
 TEST_DIR        = os.path.join("dataset", "test")
 RAW_DATA_DIR    = "raw_dataset"
