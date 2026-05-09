@@ -6,7 +6,7 @@ import tensorflow as tf
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
 
-MODEL_PATH      = "cv_models/model_fold_1.keras"
+MODEL_PATH      = "cv_models/model_fold_2.keras"
 CLASS_NAMES_PATH = "class_names.json"
 IMG_SIZE        = (224, 224)
 
