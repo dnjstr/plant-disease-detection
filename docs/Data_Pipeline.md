@@ -4,7 +4,7 @@ This section explains how the images are prepared for the model.
 
 ## 1. Finding the Data
 - **Location**: `train_cv.py` (Lines 30-46)
-- **What happens**: The script walks through your `raw_dataset` folder, maps every image path to a category name, and stores them in a massive list. 
+- **What happens**: The script walks through the `raw_dataset` folder, maps every image path to a category name, and stores them in a massive list. 
 - **Key Line**: `class_names = sorted(...)` (Line 33) ensures the classes are always in the same alphabetical order.
 
 ## 2. Dataset Balancing (Oversampling)

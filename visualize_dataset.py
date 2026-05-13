@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 
 # Configuration
-RAW_DIR = "raw_dataset"
+RAW_DIR = "cv_data"
 OUTPUT_PLOT = "dataset_distribution.png"
 
 def get_stats(data_dir):

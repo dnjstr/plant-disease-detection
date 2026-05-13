@@ -10,11 +10,11 @@ Our instructor explicitly requested **NOT** to use a static 70/30 or 80/20 split
 - This allows our script to perform **Dynamic Splitting**, where the validation set is different for every fold. 
 - This satisfies the requirement for **Cross-Validation** because every single image in the dataset eventually gets tested, rather than just a fixed 20% or 30%.
 
-### 1.1 The "Full Data Utilization" Strategy (Presentation Defense)
-If the instructor asks why we used the entire `raw_dataset` for training:
-- **The Reason**: Our dataset had a severe imbalance (some diseases only had 7 images). 
-- **The Benefit**: By using 5-Fold Cross-Validation on the *entire* dataset, we ensured the model was exposed to every rare example available while still being scientifically validated.
-- **The Metric**: The final accuracy reported is the **Average Validation Accuracy** across all 5 folds. This is a standard and respected approach in academic research when dealing with limited or imbalanced data.
+### 1.1 The "Gold Standard" Hold-out Strategy (Presentation Defense)
+We have implemented a scientifically rigorous evaluation pipeline:
+- **The Training Pool (`cv_data/`)**: We combined the training and validation sets into a single pool.
+- **The Hold-out Set (`test_data/`)**: We explicitly set aside a "forbidden" test folder that the model NEVER sees during any part of the 5-Fold Cross-Validation.
+- **The Benefit**: This ensures that our final evaluation (in Section 7) is completely unbiased. The model is tested on truly "unseen" images, proving its real-world generalization capability.
 
 ## 2. Why Cross-Validation?
 - **Concept**: A single 80/20 split can be "lucky" or "unlucky." You might accidentally put all the "easy" images in the test set. 

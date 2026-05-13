@@ -53,10 +53,17 @@ def main():
 
     # Check for the model
     if not os.path.exists(MODEL_PATH):
-        if os.path.exists("plant_disease_model.keras"):
-            MODEL_PATH = "plant_disease_model.keras"
+        # Fallback: Check if any fold models exist in the cv_models folder
+        if os.path.exists("cv_models"):
+            available_models = [f for f in os.listdir("cv_models") if f.endswith(".keras")]
+            if available_models:
+                # Default to the first one found (usually Fold 1 or 2)
+                MODEL_PATH = os.path.join("cv_models", available_models[0])
+            else:
+                print("Model not found. Please run 'train_cv.py' first.")
+                return
         else:
-            print(f"Model not found. Please run 'train_cv.py' first.")
+            print("Model not found. Please run 'train_cv.py' first.")
             return
 
     print(f"Loading model from {MODEL_PATH}...")

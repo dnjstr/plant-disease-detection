@@ -8,10 +8,9 @@ from keras.models import load_model
 from keras.utils import image_dataset_from_directory
 from sklearn.metrics import classification_report, confusion_matrix
 
-MODEL_PATH      = "cv_models/model_fold_2.keras"
+MODEL_PATH      = "cv_models/model_fold_1.keras"
 CLASS_NAMES_PATH = "class_names.json"
-TEST_DIR        = os.path.join("dataset", "test")
-RAW_DATA_DIR    = "raw_dataset"
+TEST_DIR        = "test_data"
 IMG_SIZE        = (224, 224)
 BATCH_SIZE      = 32
 
@@ -46,17 +45,23 @@ if os.path.exists(TEST_DIR):
         shuffle=False,
     )
 else:
-    print(f"'{TEST_DIR}' not found. Creating a test split from '{RAW_DATA_DIR}'...")
-    test_ds = image_dataset_from_directory(
-        RAW_DATA_DIR,
-        validation_split=0.2,
-        subset="validation",
-        seed=42,
-        image_size=IMG_SIZE,
-        batch_size=BATCH_SIZE,
-        label_mode="categorical",
-        shuffle=False,
-    )
+    # Use cv_data as a fallback if test_data is missing (though results will be biased)
+    FALLBACK_DIR = "cv_data"
+    if os.path.exists(FALLBACK_DIR):
+        print(f"'{TEST_DIR}' not found. Using a 20% validation split from '{FALLBACK_DIR}' as a fallback...")
+        test_ds = image_dataset_from_directory(
+            FALLBACK_DIR,
+            validation_split=0.2,
+            subset="validation",
+            seed=42,
+            image_size=IMG_SIZE,
+            batch_size=BATCH_SIZE,
+            label_mode="categorical",
+            shuffle=False,
+        )
+    else:
+        print(f"Error: Neither '{TEST_DIR}' nor '{FALLBACK_DIR}' found. Cannot evaluate.")
+        exit()
 
 if class_names is None:
     class_names = test_ds.class_names
