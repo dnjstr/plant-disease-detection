@@ -3,10 +3,10 @@ venv/
 .env
 
 # Datasets
-dataset/
-raw_dataset/
-cv_data/
-test_data/
+# dataset/
+# raw_dataset/
+# cv_data/
+# test_data/
 
 # Python cache
 __pycache__/
