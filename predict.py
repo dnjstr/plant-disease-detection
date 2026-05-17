@@ -41,7 +41,7 @@ def predict_image(model, img_path):
     print(f"   Confidence : {conf:.1f}%")
     print("   All scores :")
     for name, score in zip(CLASS_NAMES, preds):
-        bar = "█" * int(score * 30)
+        bar = "#" * int(score * 30)
         print(f"     {name:<22} {bar} {score*100:.1f}%")
     return label, conf
 
@@ -52,13 +52,14 @@ def main():
     args = parser.parse_args()
 
     # Check for the model
-    if not os.path.exists(MODEL_PATH):
+    selected_model = MODEL_PATH
+    if not os.path.exists(selected_model):
         # Fallback: Check if any fold models exist in the cv_models folder
         if os.path.exists("cv_models"):
             available_models = [f for f in os.listdir("cv_models") if f.endswith(".keras")]
             if available_models:
                 # Default to the first one found (usually Fold 1 or 2)
-                MODEL_PATH = os.path.join("cv_models", available_models[0])
+                selected_model = os.path.join("cv_models", available_models[0])
             else:
                 print("Model not found. Please run 'train_cv.py' first.")
                 return
@@ -66,8 +67,8 @@ def main():
             print("Model not found. Please run 'train_cv.py' first.")
             return
 
-    print(f"Loading model from {MODEL_PATH}...")
-    model = load_model(MODEL_PATH)
+    print(f"Loading model from {selected_model}...")
+    model = load_model(selected_model)
     print("Model loaded!\n")
 
     IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
